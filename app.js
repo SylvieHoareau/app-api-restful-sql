@@ -5,7 +5,8 @@ import axios from 'axios'
 
 // Import des modules
 import { getAllTasks, getTaskFromIdUser, getTaskFromNameUser, getTaskById } from './controllers/task'
-import taskRouter from './router.task.js'
+import { taskRouter } from './router/task.js'
+import { userRouter } from './router/user.js'
 
 // Création d'une nouvelle application Express
 const app = express()
@@ -13,7 +14,9 @@ const app = express()
 console.log('hello node')
 
 // Utiliser le router
-app.use('/api', taskRouter)
+// app.use('/api', taskRouter)
+app.use(taskRouter)
+app.use(userRouter)
 
 // Définition d'une route pour la racine du site
 app.get('/', (req, res) => {

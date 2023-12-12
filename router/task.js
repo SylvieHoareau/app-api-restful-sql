@@ -1,4 +1,7 @@
+import { Router } from 'express'
 import { getTaskById, postTaskById, deleteTaskById, editTaskById, getTasks } from '../controllers/task'
+
+const router = Router()
 
 router.get('/tasks/:id', async (req, res) => {
     try {
@@ -44,3 +47,5 @@ router.get('/mesTaches', async (req, res) => {
         res.status(500).json({ message: error.message })
     }
 })
+
+export default router
