@@ -150,3 +150,25 @@ export const editTaskById = async (id, newDescription) => {
     // Exécuter la requête
     await dbConnection.query(sql, [newDescription, id])
 }
+
+export const getTasks = async (req, res) => {
+    try {
+        let conditions = {}
+        let limit = req.query.limit ? parseInt(req.query.limit) : null
+        // pagination
+        let skip = req.query.skip ? parseInt(req.query.skip) : null
+        let sort = req.query.sort === 'asc' ? 'ASC' : 'DESC'
+        if (req.query.completed) {
+            conditions.completed = req.query.completed === 'true'
+        }
+        const tasks = await models.Task.findAll({ 
+            where: conditions,
+            limit: limit,
+            offset: skip,
+            order: [['createdAt', sort]]
+        })
+        res.status(200).json(tasks)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}

@@ -48,4 +48,6 @@ router.get('/mesTaches', async (req, res) => {
     }
 })
 
+router.get('/tasks', getTasks)
+
 export default router
