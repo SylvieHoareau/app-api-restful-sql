@@ -96,13 +96,35 @@ export const addTaskFromNameUser = (userName, taskDescription) => {
 // Appeler la fonction avec un nom d'utilisateur et une description de tâche spécifiques
 addTaskFromNameUser('Daniel', 'Apprendre PHP')
 
-export const getTaskById = async (id) => {
-    // Requête SQL
-    const sql = 'SELECT * FROM tasks WHERE id=?'
+// export const getTaskById = async (id) => {
+//     // Requête SQL
+//     const sql = 'SELECT * FROM tasks WHERE id=?'
 
-    // Exécuter la requête et retourner les résultats
-    const [rows] = await dbConnection.query(sql, [id])
-    return rows[0]
+//     // Exécuter la requête et retourner les résultats
+//     const [rows] = await dbConnection.query(sql, [id])
+//     return rows[0]
+// }
+
+export const getTaskById = async (req, res) => {
+    try {
+        // On récupère l'id de la tâche dans l'URL
+        const id = req.params.id
+
+        // get Task By Id avec ORM Sequelize
+        const task = await Task.findAll({
+            where: {
+                id: id
+            }
+        })
+
+        if(!task) {
+            res.status(400).send('no tasks found')
+        }
+
+        res.status(200).send(task)
+    } catch (error) {
+        res.send(error)
+    }
 }
 
 export const postTaskById = async (userId, taskDescription) => {
